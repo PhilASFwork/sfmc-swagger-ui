@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
   description: ""
-  version: "1.0.0" #used for a services API version tracking
-  title: "SFMC Transactional Swagger"
+  version: "215.031918.1" #used for a services API version tracking
+  title: "Pre-Release Salesforce Marketing Cloud Transactional Messaging APIs"
 #host: "www.exacttargetapis.com" #not required - owned by docs
 
 #####
@@ -15,7 +15,7 @@ tags:
 schemes:
 - "https"
 paths:
-  /transactional/v1/email/definition/{tsd_external_key}/send:
+  /transactionalmessages/v1/email/definition/{tsd_external_key}/send:
     parameters:
       - in: path
         name: tsd_external_key
@@ -23,7 +23,7 @@ paths:
         required: true  #always needed because it's a path paramater
         type: string
     post:
-      operationId: the_corresponding_method_in_code2
+      operationId: transactionalEmailDefinitionSend
       tags: #tags are used to group operations in Swagger UI.
       - "transactional sends"
       summary: "send a transactional EMAIL message"
@@ -46,13 +46,39 @@ paths:
             allOf:
             - $ref: '#/definitions/apiResponseBody'
             - $ref: '#/definitions/messageSendResponse'
-  /transactional/v1/email/definition/{tsd_external_key}/status/messagekey/{message_key}:
+  /transactionalmessages/v1/sms/definition/{tsd_external_key}/send:
     parameters:
       - in: path
         name: tsd_external_key
-        description: "The triggered send defintion"
+        description: "your transactional send defintion"
         required: true  #always needed because it's a path paramater
         type: string
+    post:
+      operationId: transactionalSmsDefinitionSend
+      tags: #tags are used to group operations in Swagger UI.
+      - "transactional sends"
+      summary: "send a transactional SMS message"
+      description: ""
+      consumes: #this is the content-type header for the reponse
+      - "application/json"
+      produces: #this is the content-type header in the request
+      - "application/json"
+      parameters:
+      - in: body
+        name: "Send body"
+        schema:
+          allOf:
+          - $ref: '#/definitions/smsRequest'
+        #  - $ref: '#/definitions/globalSettings'
+      responses:
+        200:
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/apiResponseBody'
+            - $ref: '#/definitions/messageSendResponse'
+  /transactionalmessages/v1/messagekey/{message_key}/status:
+    parameters:
       - in: path
         name: message_key
         description: "Unique message key to check status"
@@ -76,10 +102,6 @@ definitions:
   #globalRequestMessage:  #ain't so such thing!  Actually, I couldn't figure out how to create a nest/shared inheritance model for EmailTo>MessageTo+GlobalTo>GlobalMessage w/o namespace conflicts
   globalRequestTo:
     type: object
-    required:
-      - MessageKey
-      - SubscriberKey
-      - emailAddress
     properties:
       MessageKey:
         type: string    
@@ -88,8 +110,8 @@ definitions:
       SubscriberKey:
         type: "integer"
         format: "int64"
-        description: TBD
-        example: This can be etiher Subscirber key or email address.  Reconsilation is handled at the triggered send def.
+        description: a text field that contains a value that uniquely identifies a subscriber in your system. A subscriber key is limited to English characters only.
+        example: robert.smith@example.com
   globalRequestFrom:
     type: object
     properties:
@@ -99,21 +121,21 @@ definitions:
         example: 'NTO Notifications'    
   globalRequestAttributes:
     type: object
-    description: Name and value pairs for subscriber attributes defined for the message
-    example: "FirstName: Robert, LastName: Jones, mfa_code: 3rfjd0d"
+    description: Key:Value object for subscriber attributes defined for the message
+    example: "FirstName:Robert or XMLData:<xml>example</xml>"
   #globalSettings:
   #  type: object
-    #properties:
-      #Tags: 
-      #  type: array
-      #  description: "Meta data for reporting and tracking"
-      #  items:
-      #    type: string
-      #    example: "tag1, tag2"
-      #ValidityPeriod:
-      #  type: integer
-      #  format: int32
-      #  description: "Number of seconds, after this time if the message hasn't not been processed for whatever reason (system issue, blackout window) then no message will be sent."
+  #  properties:
+  #    Tags: 
+  #      type: array
+  #      description: "Meta data for reporting and tracking"
+  #      items:
+  #        type: string
+  #        example: "tag1, tag2"
+  #    ValidityPeriod:
+  #      type: integer
+  #      format: int32
+  #      description: "Number of seconds, after this time if the message hasn't not been processed for whatever reason (system issue, blackout window) then no message will be sent."
       #DeliveryTime:
       #  type: string
       #  format: date-time
@@ -122,7 +144,7 @@ definitions:
   emailRequestFrom:
     type: object
     properties:
-      Address: #email
+      EmailAddress: #email
         type: string
         description: 'For email channel, this would be the from address displayed when email is received. '
         example: 'notifications@nto.com'  
@@ -135,20 +157,26 @@ definitions:
         example: "Your 2-factor passcode"
       CharacterSet:
         type: string
-        description: TBD
-        example: #
+        enum:
+          - UTF-8
+          - US-ASCII
+          - ISO-8859-1
+        description: "Character set used for message encoding.  Default is UTF-8"
+        example: UTF-8
       HtmlBody:
         type: string
         description: 'For email only, can be used along with Text for Multipart MIME messages'
         example: 
   emailRequestTo:
     type: "object"
+    required:
+      - EmailAddress
     properties:
-      emailAddress:
+      EmailAddress:
         type: string
-        description: Required if no 'subscriberKey'.  The email address of the recipient. 
-        example: john.smith@example.com
-      #Message:
+        description: "Recipient's email address"
+        example: "robert.smith@example.com"
+      #Message: //215 - waiting for Tod to validate this use case
       #  allOf:
       #   - $ref: '#/definitions/emailRequestMessage'
       Attributes:
@@ -168,43 +196,67 @@ definitions:
     title: email message Request
     type: object
     properties:
-      #From:
-      #  allOf: 
-      #   - $ref: '#/definitions/globalRequestFrom'
-      #   - $ref: '#/definitions/emailRequestFrom'
-      #Message:
-      #  allOf:
-      ##  - $ref: '#/definitions/globalRequestMessage'
-      #  - $ref: '#/definitions/emailRequestMessage'
+      From:
+        allOf: 
+         - $ref: '#/definitions/globalRequestFrom'
+         - $ref: '#/definitions/emailRequestFrom'
+      Message:
+        allOf:
+        - $ref: '#/definitions/emailRequestMessage'
       To:
         type: array
         items:
           allOf: 
             - $ref: '#/definitions/globalRequestTo'
             - $ref: '#/definitions/emailRequestTo'
-      #Options:
-      #  $ref: '#/definitions/globalRequestOptions'
+      Options:
+        $ref: '#/definitions/globalRequestOptions'
 
-#------------------------------
-  globalRequestOptions:
+#-- SMS Definitions ---
+#-------------------------
+  smsRequestFrom:
     type: object
     properties:
-      Blackhold:
-        type: boolean
-        description: TBD
-        example: false
-      IngoreRecipientStatus:
-        type: boolean
-        description: TBD
-        example: false
-      TrackingEnabled:
-        type: boolean
-        description: TBD
-        example: false
-      #RequestType:
+      SenderID:  #sms
+        type: string
+        description: 'SMS identifier for who sent the message. OTT presence identifier (LINE Channel ID, Facebook Messenger Page ID, Apple Business Chat Business ID)'
+        example: "MySenderID"
+  smsRequestMessage:
+    type: object
+    properties:
+      Text:
+        type: string
+        description: "SMS text message"
+        example: "Your 2-factor passcode is 3484028"
+      #Encoding:
       #  type: string
       #  description: TBD
-      #  example: "ASYNC"
+      #  example: #
+      #CharacterSet:
+      #  type: string
+      #  description: "Example UTF-8, ANSII"
+      #  enum: ["UTF-8", "ASCII"]
+      #ContentUrl:
+      #  type: string
+      #  description: 'MMS Location of the media to send'
+      #  example: #
+  smsRequestTo:
+    type: "object"
+    required:
+      - MobileNumber
+    properties:    
+      MobileNumber:
+        type: "integer"
+        format: "int32"
+        description: "Recipient's mobile number"
+        example: #
+      #Message:
+      #  $ref: '#/definitions/smsRequestMessage'
+      Attributes:
+        $ref: '#/definitions/globalRequestAttributes'
+  smsRequestOptions:
+    type: object
+    properties:
       Subscribe:
         type: boolean
         description: TBD
@@ -218,18 +270,57 @@ definitions:
         description: TBD
         items:
           type: string
+  smsRequest:
+    title: SMS message Request
+    type: object
+    properties:
+      From:
+        allOf: 
+         - $ref: '#/definitions/globalRequestFrom'
+         - $ref: '#/definitions/smsRequestFrom'
+      Message:
+        allOf:
+      #  - $ref: '#/definitions/globalRequestMessage'
+        - $ref: '#/definitions/smsRequestMessage'
+      To:
+        type: array
+        items:
+          allOf: 
+            - $ref: '#/definitions/globalRequestTo'
+            - $ref: '#/definitions/smsRequestTo'
+      Options:
+        allOf:
+          - $ref: '#/definitions/globalRequestOptions'
+          - $ref: '#/definitions/smsRequestOptions'
+
+#------------------------------
+  globalRequestOptions:
+    type: object
+    properties:
+  #    Blackhole:
+  #      type: boolean
+  #      description: TBD
+  #      example: false
+  #    IngoreRecipientStatus:
+  #      type: boolean
+  #      description: TBD
+  #      example: false
+      TrackingEnabled:
+        type: boolean
+        description: "Email: enables link tracking.  SMS: enable link tracking and shortening"
+        example: false
 #---------------------------------
   apiResponseBody:
     type: object
     properties:
-      requestId:
+      RequestId:
         type: string
         format: UUID v4
         example: "ba9633fa-5c8d-4c42-8efa-a16412ac0c53"
-      requestErrorCode:
+      RequestErrorCode:
         type: integer
         example: 7005
-      requestErrorMessage:
+      RequestErrorMessage:
         type: string
         example: "Ensure you include all required fields in the body of the request"
   messageSendResponse:
@@ -250,15 +341,16 @@ definitions:
   messageWebhookResponse:
     type: object
     properties:
-      Event-type: 
+      Type: 
         type: string
-      Event-time:
+        example: "TransactionalSendEvents.EmailSent"
+      Timestamp:
         type: string
         format: date-time
       CompositeId:
         type: string
         example: "tsid.job.list.batch.sub"
-      Sub:
+      Info:
         type: object
         properties:
           MessageKey:
@@ -267,6 +359,6 @@ definitions:
             example: "9691010a-1e59-48a0-b0d8-67d9a86dc470"
           SubscriberKey: 
             type: string
-      Event-data:
-        type: object
-
+          EmailAddress:
+            type: string
+            example: "john.smith@example.com"

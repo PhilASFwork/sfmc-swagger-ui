@@ -1,0 +1,204 @@
+swagger: "2.0"
+info:
+  description: ""
+  version: "214.031918.1" #used for a services API version tracking
+  title: "Pre-Release Salesforce Marketing Cloud Transactional Messaging APIs"
+#host: "www.exacttargetapis.com" #not required - owned by docs
+
+#####
+# Section info is defined by tags and tag objects
+#####
+tags:
+- name: "transactional sends"
+- name: "transactional defintions"
+
+schemes:
+- "https"
+paths:
+  /transactionalmessages/v1/email/definition/{tsd_external_key}/send:
+    parameters:
+      - in: path
+        name: tsd_external_key
+        description: "your transactional send defintion"
+        required: true  #always needed because it's a path paramater
+        type: string
+    post:
+      operationId: transactionalEmailDefinitionSend
+      tags: #tags are used to group operations in Swagger UI.
+      - "transactional sends"
+      summary: "send a transactional EMAIL message"
+      description: ""
+      consumes: #this is the content-type header for the reponse
+      - "application/json"
+      produces: #this is the content-type header in the request
+      - "application/json"
+      parameters:
+      - in: body
+        name: "Send body"
+        schema:
+          allOf:
+          - $ref: '#/definitions/emailRequest'
+         # - $ref: '#/definitions/globalSettings'
+      responses:
+        200:
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/apiResponseBody'
+            - $ref: '#/definitions/messageSendResponse'
+  /transactionalmessages/v1/messagekey/{message_key}/status:
+    parameters:
+    #  - in: path
+    #    name: tsd_external_key
+    #    description: "The triggered send defintion"
+    #    required: true  #always needed because it's a path paramater
+    #    type: string
+      - in: path
+        name: message_key
+        description: "Unique message key to check status"
+        required: true  #always needed because it's a path paramater
+        type: string
+    get:
+      tags:
+      - "transactional sends"
+      summary: "fetches a paginated list of data"
+      responses:
+        200:
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/apiResponseBody'
+            - $ref: '#/definitions/messageWebhookResponse'
+
+definitions:
+#-- Global Definitions --------------------------------------------------
+#----------------------------------------------------------------------
+  #globalRequestMessage:  #ain't so such thing!  Actually, I couldn't figure out how to create a nest/shared inheritance model for EmailTo>MessageTo+GlobalTo>GlobalMessage w/o namespace conflicts
+  globalRequestTo:
+    type: object
+    required:
+      - MessageKey
+      - SubscriberKey
+      - emailAddress
+    properties:
+      MessageKey:
+        type: string    
+        description: Unique client-provided identifier for a specific message to a recipient that could be used to provide feedback for that specific message.
+        example: '9691010a-1e59-48a0-b0d8-67d9a86dc470'
+      SubscriberKey:
+        type: "integer"
+        format: "int64"
+        description: a text field that contains a value that uniquely identifies a subscriber in your system. A subscriber key is limited to English characters only.
+        example: robert.smith@example.com
+  globalRequestAttributes:
+    type: object
+    description: Key:Value object for subscriber attributes defined for the message
+    example: "FirstName:Robert or XMLData:<xml>example</xml>"
+#-- Email Definitions ---
+#-------------------------
+  emailRequestFrom:
+    type: object
+    properties:
+      EmailAddress: #email
+        type: string
+        description: 'For email channel, this would be the from address displayed when email is received. '
+        example: 'notifications@nto.com'  
+  emailRequestTo:
+    type: "object"
+    properties:
+      EmailAddress:
+        type: string
+        description: Required if no 'subscriberKey'.  The email address of the recipient. 
+        example: john.smith@example.com
+      #Message:
+      #  allOf:
+      #   - $ref: '#/definitions/emailRequestMessage'
+      Attributes:
+        $ref: '#/definitions/globalRequestAttributes'
+      CC:
+        type: array
+        items:
+          type: string
+          example: cc_example@example.com, cc2_example@example.com
+          #$ref: '#/definitions/GenericEmailArrayObject'
+      BCC:
+        type: array
+        items:
+          type: string
+          example: cc_example@example.com, cc2_example@example.com
+  emailRequest:
+    title: email message Request
+    type: object
+    properties:
+      #From:
+      #  allOf: 
+      #   - $ref: '#/definitions/globalRequestFrom'
+      #   - $ref: '#/definitions/emailRequestFrom'
+      #Message:
+      #  allOf:
+      ##  - $ref: '#/definitions/globalRequestMessage'
+      #  - $ref: '#/definitions/emailRequestMessage'
+      To:
+        type: array
+        items:
+          allOf: 
+            - $ref: '#/definitions/globalRequestTo'
+            - $ref: '#/definitions/emailRequestTo'
+      #Options:
+      #  $ref: '#/definitions/globalRequestOptions'
+
+#---------------------------------
+  apiResponseBody:
+    type: object
+    properties:
+      RequestId:
+        type: string
+        format: UUID v4
+        example: "ba9633fa-5c8d-4c42-8efa-a16412ac0c53"
+      RequestErrorCode:
+        type: integer
+        example: 7005
+      RequestErrorMessage:
+        type: string
+        example: "Ensure you include all required fields in the body of the request"
+  messageSendResponse:
+    type: object
+    properties:
+      responses:
+        type: array
+        items: 
+          type: object
+          properties:
+            MessageKey:
+              type: string
+              example: "9691010a-1e59-48a0-b0d8-67d9a86dc470"
+            ErrorCode:
+              type: integer
+            ErrorMessage:
+              type: string
+  messageWebhookResponse:
+    type: object
+    properties:
+      Type: 
+        type: string
+        example: "TransactionalSendEvents.EmailSent"
+      Timestamp:
+        type: string
+        format: date-time
+      CompositeId:
+        type: string
+        example: "tsid.job.list.batch.sub"
+      Info:
+        type: object
+        properties:
+          MessageKey:
+            type: string
+            format: UUID v4
+            example: "9691010a-1e59-48a0-b0d8-67d9a86dc470"
+          SubscriberKey: 
+            type: string
+          EmailAddress:
+            type: string
+            example: "john.smith@example.com"
+
+
