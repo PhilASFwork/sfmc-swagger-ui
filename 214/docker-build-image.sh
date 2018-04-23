@@ -12,7 +12,7 @@ docker images
 
 #
 # 3. Test locally with the command below:
-# docker run -p 4000:8080 allenhoem/sfmc-swagger-ui
+# docker run -p 4000:8080 allenhoem/sfmc-swagger-ui-214
 #
 # Open a browser and browse to: http://localhost:4000
 #
@@ -38,8 +38,8 @@ heroku container:login
 sleep 2
 #
 docker tag allenhoem/sfmc-swagger-ui registry.heroku.com/sfmc-swagger-ui-214/web
-docker push registry.heroku.com/sfmc-swagger-ui-214/web
-#heroku container:push web -a sfmc-txn-msg-api-214  #I think I can just go straight to this.
+#docker push registry.heroku.com/sfmc-swagger-ui-214/web
+heroku container:push web -a sfmc-txn-msg-api-214  #I think I can just go straight to this.
 #
 # Open a browser and browse to: https://sfmc-swagger-ui.herokuapp.com/
 #

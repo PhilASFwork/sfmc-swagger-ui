@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   description: ""
-  version: "215.031918.1" #used for a services API version tracking
+  version: "215.180423.1" #used for a services API version tracking
   title: "Pre-Release Salesforce Marketing Cloud Transactional Messaging APIs"
 #host: "www.exacttargetapis.com" #not required - owned by docs
 
@@ -26,7 +26,7 @@ paths:
       operationId: transactionalEmailDefinitionSend
       tags: #tags are used to group operations in Swagger UI.
       - "transactional sends"
-      summary: "send a transactional EMAIL message"
+      summary: "send a transactional email message"
       description: ""
       consumes: #this is the content-type header for the reponse
       - "application/json"
@@ -77,7 +77,7 @@ paths:
             allOf:
             - $ref: '#/definitions/apiResponseBody'
             - $ref: '#/definitions/messageSendResponse'
-  /transactionalmessages/v1/messagekey/{message_key}/status:
+  /transactionalmessages/v1/email/messagekey/{message_key}/status:
     parameters:
       - in: path
         name: message_key
@@ -87,7 +87,7 @@ paths:
     get:
       tags:
       - "transactional sends"
-      summary: "fetches a paginated list of data"
+      summary: "fetches email send status by messageKey (cached)"
       responses:
         200:
           description: OK
@@ -103,11 +103,11 @@ definitions:
   globalRequestTo:
     type: object
     properties:
-      MessageKey:
+      messageKey:
         type: string    
         description: Unique client-provided identifier for a specific message to a recipient that could be used to provide feedback for that specific message.
         example: '9691010a-1e59-48a0-b0d8-67d9a86dc470'
-      SubscriberKey:
+      subscriberKey:
         type: "integer"
         format: "int64"
         description: a text field that contains a value that uniquely identifies a subscriber in your system. A subscriber key is limited to English characters only.
@@ -115,7 +115,7 @@ definitions:
   globalRequestFrom:
     type: object
     properties:
-      Name:
+      name:
         type: string
         description: 'This is the name displayed when message is received (email only?)'
         example: 'NTO Notifications'    
@@ -144,18 +144,18 @@ definitions:
   emailRequestFrom:
     type: object
     properties:
-      EmailAddress: #email
+      emailAddress: #email
         type: string
         description: 'For email channel, this would be the from address displayed when email is received. '
         example: 'notifications@nto.com'  
   emailRequestMessage:
     type: object
     properties:
-      Subject:
+      subject:
         type: string
         description: "Subject field for email. OTT Message Name (optional)"
         example: "Your 2-factor passcode"
-      CharacterSet:
+      characterSet:
         type: string
         enum:
           - UTF-8
@@ -163,7 +163,7 @@ definitions:
           - ISO-8859-1
         description: "Character set used for message encoding.  Default is UTF-8"
         example: UTF-8
-      HtmlBody:
+      htmlBody:
         type: string
         description: 'For email only, can be used along with Text for Multipart MIME messages'
         example: 
@@ -172,22 +172,22 @@ definitions:
     required:
       - EmailAddress
     properties:
-      EmailAddress:
+      emailAddress:
         type: string
         description: "Recipient's email address"
         example: "robert.smith@example.com"
       #Message: //215 - waiting for Tod to validate this use case
       #  allOf:
       #   - $ref: '#/definitions/emailRequestMessage'
-      Attributes:
+      attributes:
         $ref: '#/definitions/globalRequestAttributes'
-      CC:
+      cc:
         type: array
         items:
           type: string
           example: cc_example@example.com, cc2_example@example.com
           #$ref: '#/definitions/GenericEmailArrayObject'
-      BCC:
+      bcc:
         type: array
         items:
           type: string
@@ -196,20 +196,23 @@ definitions:
     title: email message Request
     type: object
     properties:
-      From:
+      from:
         allOf: 
          - $ref: '#/definitions/globalRequestFrom'
          - $ref: '#/definitions/emailRequestFrom'
-      Message:
+      message:
         allOf:
         - $ref: '#/definitions/emailRequestMessage'
-      To:
+      attributes:
+        allOf:
+        - $ref: '#/definitions/globalRequestAttributes'
+      to:
         type: array
         items:
           allOf: 
             - $ref: '#/definitions/globalRequestTo'
             - $ref: '#/definitions/emailRequestTo'
-      Options:
+      options:
         $ref: '#/definitions/globalRequestOptions'
 
 #-- SMS Definitions ---
@@ -217,14 +220,14 @@ definitions:
   smsRequestFrom:
     type: object
     properties:
-      SenderID:  #sms
+      senderID:  #sms
         type: string
         description: 'SMS identifier for who sent the message. OTT presence identifier (LINE Channel ID, Facebook Messenger Page ID, Apple Business Chat Business ID)'
         example: "MySenderID"
   smsRequestMessage:
     type: object
     properties:
-      Text:
+      text:
         type: string
         description: "SMS text message"
         example: "Your 2-factor passcode is 3484028"
@@ -245,27 +248,27 @@ definitions:
     required:
       - MobileNumber
     properties:    
-      MobileNumber:
+      mobileNumber:
         type: "integer"
         format: "int32"
         description: "Recipient's mobile number"
         example: #
       #Message:
       #  $ref: '#/definitions/smsRequestMessage'
-      Attributes:
+      attributes:
         $ref: '#/definitions/globalRequestAttributes'
   smsRequestOptions:
     type: object
     properties:
-      Subscribe:
+      subscribe:
         type: boolean
         description: TBD
         example: false
-      Resubscribe:
+      resubscribe:
         type: boolean
         description: TBD
         example: false
-      Keyword:
+      keyword:
         type: array
         description: TBD
         items:
@@ -274,21 +277,21 @@ definitions:
     title: SMS message Request
     type: object
     properties:
-      From:
+      from:
         allOf: 
          - $ref: '#/definitions/globalRequestFrom'
          - $ref: '#/definitions/smsRequestFrom'
-      Message:
+      message:
         allOf:
       #  - $ref: '#/definitions/globalRequestMessage'
         - $ref: '#/definitions/smsRequestMessage'
-      To:
+      to:
         type: array
         items:
           allOf: 
             - $ref: '#/definitions/globalRequestTo'
             - $ref: '#/definitions/smsRequestTo'
-      Options:
+      options:
         allOf:
           - $ref: '#/definitions/globalRequestOptions'
           - $ref: '#/definitions/smsRequestOptions'
@@ -305,7 +308,7 @@ definitions:
   #      type: boolean
   #      description: TBD
   #      example: false
-      TrackingEnabled:
+      trackingEnabled:
         type: boolean
         description: "Email: enables link tracking.  SMS: enable link tracking and shortening"
         example: false
@@ -313,14 +316,14 @@ definitions:
   apiResponseBody:
     type: object
     properties:
-      RequestId:
+      requestId:
         type: string
         format: UUID v4
         example: "ba9633fa-5c8d-4c42-8efa-a16412ac0c53"
-      RequestErrorCode:
+      requestErrorCode:
         type: integer
         example: 7005
-      RequestErrorMessage:
+      requestErrorMessage:
         type: string
         example: "Ensure you include all required fields in the body of the request"
   messageSendResponse:
@@ -331,34 +334,34 @@ definitions:
         items: 
           type: object
           properties:
-            MessageKey:
+            messageKey:
               type: string
               example: "9691010a-1e59-48a0-b0d8-67d9a86dc470"
-            ErrorCode:
+            errorCode:
               type: integer
-            ErrorMessage:
+            errorMessage:
               type: string
   messageWebhookResponse:
     type: object
     properties:
-      Type: 
+      type: 
         type: string
         example: "TransactionalSendEvents.EmailSent"
-      Timestamp:
+      timestamp:
         type: string
         format: date-time
-      CompositeId:
+      compositeId:
         type: string
         example: "tsid.job.list.batch.sub"
-      Info:
+      info:
         type: object
         properties:
-          MessageKey:
+          messageKey:
             type: string
             format: UUID v4
             example: "9691010a-1e59-48a0-b0d8-67d9a86dc470"
-          SubscriberKey: 
+          subscriberKey: 
             type: string
-          EmailAddress:
+          emailAddress:
             type: string
             example: "john.smith@example.com"

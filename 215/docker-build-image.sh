@@ -35,7 +35,7 @@ docker images
 #
 # heroku login
 heroku container:login
-sleep 2
+sleep 1
 #
 docker tag allenhoem/sfmc-swagger-ui-215 registry.heroku.com/sfmc-swagger-ui-215/web
 docker push registry.heroku.com/sfmc-swagger-ui-215/web
