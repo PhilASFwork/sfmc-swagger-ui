@@ -15,7 +15,7 @@ tags:
 schemes:
 - "https"
 paths:
-  /transactionalmessages/v1/email/definition/{tsd_external_key}/send:
+  /transactionalmessages/v1/email/definition/{definition_key}/send:
     parameters:
       - in: path
         name: tsd_external_key
@@ -46,7 +46,7 @@ paths:
             allOf:
             - $ref: '#/definitions/apiResponseBody'
             - $ref: '#/definitions/messageSendResponse'
-  /transactionalmessages/v1/sms/definition/{tsd_external_key}/send:
+  /transactionalmessages/v1/sms/definition/{definition_key}/send:
     parameters:
       - in: path
         name: tsd_external_key
@@ -97,9 +97,9 @@ paths:
             - $ref: '#/definitions/messageWebhookResponse'
 
 definitions:
-#-- Global Definitions --------------------------------------------------
-#----------------------------------------------------------------------
-  #globalRequestMessage:  #ain't so such thing!  Actually, I couldn't figure out how to create a nest/shared inheritance model for EmailTo>MessageTo+GlobalTo>GlobalMessage w/o namespace conflicts
+#-- Global Definitions ----------
+#--------------------------------
+  #globalRequestMessage: skipped due to a nest/shared inheritance model for EmailTo>MessageTo+GlobalTo>GlobalMessage w/o namespace conflicts
   globalRequestTo:
     type: object
     properties:
@@ -320,10 +320,10 @@ definitions:
         type: string
         format: UUID v4
         example: "ba9633fa-5c8d-4c42-8efa-a16412ac0c53"
-      requestErrorCode:
+      statusCode:
         type: integer
         example: 7005
-      requestErrorMessage:
+      statusMessage:
         type: string
         example: "Ensure you include all required fields in the body of the request"
   messageSendResponse:

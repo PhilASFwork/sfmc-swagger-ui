@@ -71,14 +71,14 @@ paths:
             - $ref: '#/definitions/messageWebhookResponse'
 
 definitions:
-#-- Global Definitions --------------------------------------------------
-#----------------------------------------------------------------------
-  #globalRequestMessage:  #ain't so such thing!  Actually, I couldn't figure out how to create a nest/shared inheritance model for EmailTo>MessageTo+GlobalTo>GlobalMessage w/o namespace conflicts
+#-- Global Definitions ----------
+#--------------------------------
+  #globalRequestMessage: skipped due to a nest/shared inheritance model for EmailTo>MessageTo+GlobalTo>GlobalMessage w/o namespace conflicts
   globalRequestTo:
     type: object
     required:
-      - MessageKey
-      - SubscriberKey
+      - messageKey
+      - subscriberKey
       - emailAddress
     properties:
       messageKey:
@@ -157,10 +157,10 @@ definitions:
         type: string
         format: UUID v4
         example: "ba9633fa-5c8d-4c42-8efa-a16412ac0c53"
-      requestErrorCode:
+      statusCode:
         type: integer
-        example: 7005
-      requestErrorMessage:
+        example: 17
+      statusMessage:
         type: string
         example: "Ensure you include all required fields in the body of the request"
   messageSendResponse:
