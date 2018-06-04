@@ -1,0 +1,21 @@
+sudo: required
+
+language: ruby
+# rvm:
+# 	- 2.4
+
+services:
+	- docker
+
+before_script:
+	- docker rmi -f allenhoem/sfmc-swagger-ui
+	- docker rmi -f registry.heroku.com/sfmc-swagger-ui/web
+
+script:
+	- docker build . -t allenhoem/sfmc-swagger-ui
+	- docker images
+
+deploy: 
+	provider: heroku
+	api_key: # This is an Encrypted Value. It is encrypted using "travis encrypt $(heroku auth:token) --add deploy.api_key"
+	app: sfmc-txn-msg-api-215

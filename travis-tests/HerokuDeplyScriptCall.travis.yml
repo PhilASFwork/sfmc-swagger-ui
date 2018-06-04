@@ -1,0 +1,16 @@
+sudo: required
+
+language: ruby
+
+services:
+	- docker
+
+before_script:
+	- chmod +x docker-build-image.sh
+
+script: ./docker-build-image.sh
+
+deploy:
+	provider: heroku
+	api_key:
+	app: sfmc-txn-msg-api-215
