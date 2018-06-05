@@ -3,14 +3,14 @@ sudo: required
 language: ruby
 
 services:
-	- docker
+  - docker
 
 before_script:
-	- chmod +x docker-build-image.sh
+  - chmod +x docker-build-image.sh
 
-script: ./docker-build-image.sh
+script: ./main/docker-build-image.sh
 
 deploy:
-	provider: heroku
-	api_key:
-	app: sfmc-travis-tests
+  provider: heroku
+  api_key:
+  app: sfmc-travis-tests

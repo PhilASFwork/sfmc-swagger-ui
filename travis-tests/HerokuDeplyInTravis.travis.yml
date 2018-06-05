@@ -5,17 +5,19 @@ language: ruby
 # 	- 2.4
 
 services:
-	- docker
+  - docker
 
 before_script:
-	- docker rmi -f philasfwork/sfmc-swagger-ui
-	- docker rmi -f registry.heroku.com/sfmc-travis-tests/web
+  - docker rmi -f philasfwork/sfmc-swagger-ui
+  - docker rmi -f registry.heroku.com/sfmc-travis-tests/web
 
 script:
-	- docker build . -t philasfwork/sfmc-swagger-ui
-	- docker images
+  - docker build . -t philasfwork/sfmc-swagger-ui
+  - docker images
 
 deploy: 
-	provider: heroku
-	api_key: # This is an Encrypted Value. It is encrypted using "travis encrypt $(heroku auth:token) --add deploy.api_key"
-	app: sfmc-travis-tests
+  provider: heroku
+  # run "travis encrypt $(heroku auth:token) --add deploy.api_key"
+  # otherwise you will have to find and encrypt the Heroku key and put it in the tag below.
+  #api_key: 
+  app: sfmc-travis-tests
