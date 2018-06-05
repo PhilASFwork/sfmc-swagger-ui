@@ -12,7 +12,7 @@ before_script:
   - docker rmi -f registry.heroku.com/sfmc-travis-tests/web
 
 script:
-  - docker build . -t philasfwork/sfmc-swagger-ui
+  - docker build ./main -t philasfwork/sfmc-swagger-ui
   - docker images
 
 deploy: 
