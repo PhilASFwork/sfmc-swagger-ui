@@ -3,23 +3,23 @@
 set -x
 
 # 1. get rid of any existing images
-docker rmi -f allenhoem/sfmc-swagger-ui
-docker rmi -f registry.heroku.com/sfmc-swagger-ui/web
+docker rmi -f philasfwork/sfmc-swagger-ui				# Add MCET iteration number here ".../sfmc-swagger-ui-215"
+docker rmi -f registry.heroku.com/sfmc-swagger-ui/web	# and here: ".../sfmc-swagger-ui-215/web"
 
 # 2. build the nerw Docker image
-docker build . -t allenhoem/sfmc-swagger-ui
+docker build . -t philasfwork/sfmc-swagger-ui
 docker images
 
 #
 # 3. Test locally with the command below:
-#docker run -p 4000:8080 allenhoem/sfmc-swagger-ui
+#docker run -p 4000:8080 philasfwork/sfmc-swagger-ui
 #
 # Open a browser and browse to: http://localhost:4000
 #
 
 #
 # 4. (Optional) Publish to Dockerhub with the command below:
-# docker push allenhoem/sfmc-swagger-ui
+# docker push philasfwork/sfmc-swagger-ui
 #
 
 #
@@ -36,7 +36,7 @@ docker images
 heroku login
 heroku container:login
 #
-# docker tag allenhoem/sfmc-swagger-ui registry.heroku.com/sfmc-swagger-ui/web
+# docker tag philasfwork/sfmc-swagger-ui registry.heroku.com/sfmc-swagger-ui/web
 # docker push registry.heroku.com/sfmc-swagger-ui/web
 heroku container:push web -a sfmc-txn-msg-api-215  #I think I can just go straight to this.
 #

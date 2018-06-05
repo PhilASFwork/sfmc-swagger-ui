@@ -1,0 +1,10 @@
+language: python
+
+before_script:
+	- echo "Before Run"
+
+script:
+	- python hellotravis.py
+
+after_script:
+	- echo "Done"
