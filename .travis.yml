@@ -1,13 +1,18 @@
 sudo: required
+
 language: ruby
+
 services:
   - docker
+
 before_script:
   - docker rmi -f philasfwork/sfmc-swagger-ui
   - docker rmi -f registry.heroku.com/sfmc-travis-tests/web
+
 script:
   - docker build ./main -t philasfwork/sfmc-swagger-ui
   - docker images
+
 deploy:
   provider: heroku
   api_key:
