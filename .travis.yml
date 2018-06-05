@@ -5,6 +5,9 @@ language: ruby
 services:
   - docker
 
+env:
+  secure: pUVyGwAig9QO+1AqGV9ZQsUSWt2JtZxR5QEqe70NGa57i35ysODEynl7l3ew8blUkOldG6yXljXtyzEgL8BpVC6CcNSc4oAsQ1WV3lqaCta9/l+ruo8z2TM5p4cKqZTqMq0QAuJjRBbRAsqnk3R96NEWF3F6eJ84WG+pQFTcRM3z1QfXYYShFkF+fySZ24cuLZHNTLBk6UZK7D59aQt+wjhwFkLLZuvq0LnjkpHQ1EYsSv5ebMA2GjG2J0sI+znRqhgDJD0dsXtvtso920eGawMZFm/SbtMOuZj6Rmoq8ajtzB7dVIZW/safxZhkGe5pKbdQyqjyVzPBJx0uztPvta0t662MHoeWmNIsaeXZRS1lgndH1wgLcANyIyBo9uvP0QAB1MjXOIWIdR15e8y2g45siaZxE9Fo4geAaZhjbFTpiejsrfGXLMlTt/XcEGAsnJauNnFe2fOeJihfIMnnqrHKASek8LqdgUA3wTnC+LnIKIyekJHhxT2XJSNLCk9Eixa/GxhyaH75OixQgPcO5mttR2H9/Kf3vfugRO6rcSk6xXLjLvYA/wvMhQ7M9znB8xcHz9musYsBW8JtwddPcojLgo05oEAjXrB3sFBAvsrRltk/yqXbSzNQrRBpFo3x3g2hFtiKawzJSDzv+Hy5HUTi3LE9fSgWURFMWPfpIMU=
+
 before_script:
   - docker rmi -f philasfwork/sfmc-swagger-ui
   - docker rmi -f registry.heroku.com/sfmc-travis-tests/web
@@ -12,7 +15,8 @@ before_script:
 script:
   - docker build ./main -t philasfwork/sfmc-swagger-ui
   - docker images
-  #- curl -n -X PATCH https://api.heroku.com/apps/sfmc-travis-tests/formation -d "{ 'updates':[{'type':'web','docker_image':'philasfwork/sfmc-swagger-ui'}]}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3.docker-releases""
+  #- curl -n -X PATCH https://api.heroku.com/apps/sfmc-travis-tests/formation -d "{ 'updates':[{'type':'web','docker_image':'philasfwork/sfmc-swagger-ui'}]}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3.docker-releases"
+  - heroku login 
   - heroku container:login
   - heroku container:push web -a sfmc-travis-tests
   - heroku container:release web
