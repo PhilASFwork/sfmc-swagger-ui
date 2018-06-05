@@ -14,7 +14,7 @@ script:
   - docker images
 
 deploy: 
-  # is this all I need?
+  # Have to use Heroku CLI to log in from the project Directory.
   provider: heroku
   # run "travis encrypt $(heroku auth:token) --add deploy.api_key"
   # otherwise you will have to find and encrypt the Heroku key and put it in the tag below.
