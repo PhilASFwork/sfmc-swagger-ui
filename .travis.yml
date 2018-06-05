@@ -1,23 +1,17 @@
 sudo: required
-
 language: ruby
-
 services:
   - docker
-
 before_script:
   - docker rmi -f philasfwork/sfmc-swagger-ui
   - docker rmi -f registry.heroku.com/sfmc-travis-tests/web
-
 script:
   - docker build ./main -t philasfwork/sfmc-swagger-ui
   - docker images
-
-deploy: 
-  # Have to use Heroku CLI to log in from the project Directory.
+deploy:
   provider: heroku
-  # run "travis encrypt $(heroku auth:token) --add deploy.api_key"
-  # otherwise you will have to find and encrypt the Heroku key and put it in the tag below.
   api_key:
-    secure: RhvjouAdhPhHKAOfhY0RmOgj1UdxKzwvZqaDpmNCKrY8Pd6I88SqpVfwM4NKBA9KfrPCfPrj1B+KES/s+kk8cKypWNxQIcWftlvfZsVLbP3bG1VysV5eCDsUhnafUfIFavu5y1YEWMnLihCbnn7GY5o0dhrGh52aSiNv/uTa8Je3o/Udgf6Y/EEl3+/56AAmttRg82HpFxnkKQ5GHFXcBNXIil9Fk+i1uIQfFxAZb/DOdRQ07f2bg/ZmThti8AsNPC37Fh2IoQse37CvcLwbIfUJZlpnG2NhE06ULwxLX6hxl+c2bNZURiBEoLWpjfrpsxE1/e3cXF/rPZt9Urzdf8mMf04P6t0J3j1Ik/2pFLE2OXCTPcErwkVNo7gujQ+o5HjQnXD582d/sHKVmOxQheV8vo3tlC442ptzf6cqdwL5wI+JUcom//XdI/C1vRH86asz1Q30wVJ81+s7dvCFlowD2BA3sCWMHGAMM5CjljlUPRH/CQz2r1AZwa7O8xgeh7ohyJvtPjMxX4kjXQn6pXzr0arjMkkd62CSjqrILCl6EK4/SQ7PPdZRhxs9Fl3YzhOfROm3qRrDJz+0ddSXyKWn0CANP13a2Y6LD44LSbTRq567Y3c0AB3/aW2rYVQb4WQoExbI/53c2Tzhp7Jie+HAqfq0SxdaczR+I1bWzjk=
+    secure: arBdFF8DRB0DFP3yO2kJCtinAS/0ZC7OOw8RkufU8+pm0zFJSwUfcojE0Bcy6KIGH4UYdsEZa9FHatSFExirLCMTYwsg3vey/I8tP+8NHxLDvmMmwVpAglMguSU5ON1kztQm71SXATdqilou4Xfqzf8U+J+mmbTgpYs8P5NE0YjPnaV8FnBkl8A/0zcTOmDkQTWoJG1nx6LKce2YMgl/uZcN3ngM5oSR84QSvmLnZrCaU7lNhos87x46S4WxGdeVJhib3Jo53C8awE4fKR9vn9+NCdvKV4LsXjhYvA3ZpK/zYV4sE9/SVUpgUSf77gLS5N/KzZpRR7g62tNH4HUm4H2JWp2gwgLi2YUGRMY0ADrQpNnFoaY2t7wwEVbw4lUCWtWAyE+zRbXUSQHRV8bLaqD5nLiUg3+AUfcjEd+OZyi9U7uFV439Cez+kDpL5oDlQ6e4G9I6BbIGeQeohoQneP4+2VsTnmKFxAvwbtllmggz08j+buJ1Rwhet0qjlnr4SLdeZMXVFFOZxjDQV1R/mHaDVQWM3mdNPoeXGqq3mmjnzrsmHO25aCv23ucb4M8b2QKuI1KGoAaPcQkZeFgDLf9j/TFA0YL6svVZMqFFl3iv7G4vOl8y0B62/RsHHKvy74oVFMZRrb3OgDxNESpbOJQncwCoFZjwGmMP2UKwNAc=
   app: sfmc-travis-tests
+  on:
+    repo: PhilASFwork/sfmc-swagger-ui
