@@ -1,10 +1,10 @@
 language: python
 
 before_script:
-	- echo "Before Run"
+  - echo "Before Run"
 
 script:
-	- python hellotravis.py
+  - python hellotravis.py
 
 after_script:
-	- echo "Done"
+  - echo "Done"
