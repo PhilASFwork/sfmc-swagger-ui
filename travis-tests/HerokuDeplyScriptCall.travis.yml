@@ -13,4 +13,4 @@ script: ./docker-build-image.sh
 deploy:
 	provider: heroku
 	api_key:
-	app: sfmc-txn-msg-api-215
+	app: sfmc-travis-tests
