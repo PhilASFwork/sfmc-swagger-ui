@@ -1,8 +1,6 @@
 sudo: required
 
 language: ruby
-# rvm:
-# 	- 2.4
 
 services:
   - docker
@@ -15,9 +13,9 @@ script:
   - docker build ./main -t philasfwork/sfmc-swagger-ui
   - docker images
 
-deploy: 
+deploy:
   provider: heroku
-  # run "travis encrypt $(heroku auth:token) --add deploy.api_key"
-  # otherwise you will have to find and encrypt the Heroku key and put it in the tag below.
-  #api_key: 
+  api_key:
+    secure: Lp0vleoGnuyOouFWDNbcwqXT2AXYstaTmOrpRsppU8fFUKskCPup7xph6PPdnCL0DC2UMvUZfLXDrISUfbSOAu4dC4FoX9klR9B/8Bw2mikZb5lcNcjZwFKS3EdEdbYKIseol4bLq6Y0dDqf+ICKojNwwG7pQNmRBFhR8iKlrVKVEWHqwsZDOsYt+4JWjS4ASHwlaL6kFa3NpHxxH8AZ4xTBTFHzocNsbRYw+R7ZcVnsrDRBjUKryDPkwP4VVsIKuosP4sCWTfpRUxtLLvi1ahm5puSKGwGuPgCD44uYfe7X5zr/KdsblEZRhjvG2F4Vag543X0tb7jIDiHqn9DmlpDKGBf81MNPcnSY/jqFI6QwYOS5mN+nQK7ZyGsggUMmXfprfPff8klAAKfyCWBlf3c31O65TnWPfguw/zV0omNJmhWOndFt+9RVwoCILYBRWQqKQNp9urFZXk6JtiNtxtS43jk+QzW2eF3Q0Y6OdUtxJtbWy4GC9sQxEufTuWf/tOXE+fOw3tfDa3ngkt9zyuhJ0QQ/u4DuQ5oE2dB7yhWKwWR57pbOdXL58Jy1lak+IHJCXmspb1U5CahsQIW9QurO4z4l24x/LlhrSCs5Jr/W5o+J5tIJ8aY+REBWynsVKhU4t1lLVP6ndtWGESB2cNHr/imug7HzrvxkR6+LgIs=
   app: sfmc-travis-tests
+
