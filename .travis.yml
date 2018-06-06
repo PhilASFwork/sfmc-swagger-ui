@@ -16,7 +16,7 @@ script:
   - docker build ./main -t philasfwork/sfmc-swagger-ui
   - docker images
   #- curl -n -X PATCH https://api.heroku.com/apps/sfmc-travis-tests/formation -d "{ 'updates':[{'type':'web','docker_image':'philasfwork/sfmc-swagger-ui'}]}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3.docker-releases"
-  - echo "phillip.anderson@salesforce.com" | heroku login
+  - heroku login
   - heroku container:login
   - heroku container:push web -a sfmc-travis-tests
   - heroku container:release web
