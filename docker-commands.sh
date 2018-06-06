@@ -10,8 +10,16 @@ docker images
 
 echo "Trying login"
 heroku container:login
+echo "logged in"
 
-echo "logged in; trying web push"
+echo "making Docker Tag"
+docker tag philasfwork/sfmc-swagger-ui registry.heroku.com/sfmc-swagger-ui/web
+
+echo "docker pushing to Registry"
+docker push registry.heroku.com/sfmc-swagger-ui/web
+echo "Image Pushed"
+
+echo "Heroku pushing Image"
 heroku container:push web -a sfmc-travis-tests
 
-echo "Image pushed."
+echo "Image pushed (published?)"
