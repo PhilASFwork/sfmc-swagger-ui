@@ -14,7 +14,6 @@ env:
 
 before_script:
   - curl https://cli-assets.heroku.com/install-ubuntu.sh | sh # This will update the heroku CLI to include the required container:releasee functionality
-  # might not need these calls?
   - docker rmi -f philasfwork/sfmc-swagger-ui
   - docker rmi -f registry.heroku.com/sfmc-travis-tests/web
   - chmod +x heroku-setup.sh
@@ -22,10 +21,26 @@ before_script:
 script:
   # Setup Heroku. Basically Makes Heroku Think it was already logged into.
   - ./heroku-setup.sh
+  # The Following commands are taken from the original docker-build-image.sh (Not including the echo's)
+  #- echo "Ready to build"
+  #- docker build ./main -t philasfwork/sfmc-swagger-ui
 
-  # log into container registry and create the image.
+  #- echo "image Built"
+  #- docker images
+
+  # This is where 'heroku login' was called in the original script.
+  # I fudge a login in the heroku-setup.sh script.
+
   - echo "Trying login"
   - heroku container:login
+
+  # Might not need this?
+  #- echo "making Docker Tag"
+  #- docker tag philasfwork/sfmc-swagger-ui registry.heroku.com/sfmc-swagger-ui/web
+
+  # Might not need this?
+  #- echo "docker pushing to Registry"
+  #- docker push registry.heroku.com/sfmc-swagger-ui/web 
 
   - echo "changing Dir so Heroku knows how to build the Image."
   - cd main
