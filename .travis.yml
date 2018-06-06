@@ -6,14 +6,14 @@ services:
   - docker
 
 env:
-  secure: pUVyGwAig9QO+1AqGV9ZQsUSWt2JtZxR5QEqe70NGa57i35ysODEynl7l3ew8blUkOldG6yXljXtyzEgL8BpVC6CcNSc4oAsQ1WV3lqaCta9/l+ruo8z2TM5p4cKqZTqMq0QAuJjRBbRAsqnk3R96NEWF3F6eJ84WG+pQFTcRM3z1QfXYYShFkF+fySZ24cuLZHNTLBk6UZK7D59aQt+wjhwFkLLZuvq0LnjkpHQ1EYsSv5ebMA2GjG2J0sI+znRqhgDJD0dsXtvtso920eGawMZFm/SbtMOuZj6Rmoq8ajtzB7dVIZW/safxZhkGe5pKbdQyqjyVzPBJx0uztPvta0t662MHoeWmNIsaeXZRS1lgndH1wgLcANyIyBo9uvP0QAB1MjXOIWIdR15e8y2g45siaZxE9Fo4geAaZhjbFTpiejsrfGXLMlTt/XcEGAsnJauNnFe2fOeJihfIMnnqrHKASek8LqdgUA3wTnC+LnIKIyekJHhxT2XJSNLCk9Eixa/GxhyaH75OixQgPcO5mttR2H9/Kf3vfugRO6rcSk6xXLjLvYA/wvMhQ7M9znB8xcHz9musYsBW8JtwddPcojLgo05oEAjXrB3sFBAvsrRltk/yqXbSzNQrRBpFo3x3g2hFtiKawzJSDzv+Hy5HUTi3LE9fSgWURFMWPfpIMU=
+  secure: dl2UY8qkOYpmN26ED6TV/b+XcBCFfJtw1KMfJgBVOJOs02acH6wPwP9JHx/1bsJyFoLPUoBSkLa2geWlRJPpj00hobSyzM6jhHQ6tp3l/toDbWe3BGCj/Aad3+yde1JJ+J6jr99C0WbNUQ+90KPhJ59tNxR/alqOqrN1b/OE6/cwBxYRBQC+9Fu50ggUJpY8b5EpALxoZlUcLIQfGyCldY/VUMVur/0X3HK1Fz+eLnN/HFfsN0dHMWeUT3RQpOfKms03IlszF84EGn02zOYkb/Kxx9cGXdBvx2QFp1UQvocJIBs2XFzg9EkCjCgKqXAcoEOD6O2/ngEXeyO4ZsMNieNvpyZbWJe0AFuh+XZCV8fJkQ26zt80k8HWVl68qH+G+F6rs0a1BpkqipgFnVq5ZAayUH0p+AYne5kfsXHnta8CreImcWRoDNpw54anTb+dJyVJ+WeKwQ1NJW7Yzy0YkdP+RtcmbzNWM/A2+w9Na/59L1JcNr7UBPgVgqNO19/sKqKzHJYhe63SZimBlKYgqt5DbCfq+8DNZOMQh/ZrKMV6tTeiGDyi4rNewnqJB8FqsEUC5qRLvuP3zaSWONXDbDDbFgz3VQhgwR93EjFDOWvFYEsRJdXRAh9GHDr2oWP2llVW86D20PMTlRzOOAPySHFysNAWsK/OSg6zdGqRF0s=
 
 before_script:
   - docker rmi -f philasfwork/sfmc-swagger-ui
   - docker rmi -f registry.heroku.com/sfmc-travis-tests/web
 
 script:
-  - heroku run "HEROKU_EMAIL=phillip.anderson@salesforce.com ./docker-commands.sh" -a sfmc-travis-tests
+  - heroku run "./docker-commands.sh" -a sfmc-travis-tests
   #- docker build ./main -t philasfwork/sfmc-swagger-ui
   #- docker images
   #- curl -n -X PATCH https://api.heroku.com/apps/sfmc-travis-tests/formation -d "{ 'updates':[{'type':'web','docker_image':'philasfwork/sfmc-swagger-ui'}]}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3.docker-releases"
