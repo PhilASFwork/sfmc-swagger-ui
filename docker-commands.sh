@@ -6,6 +6,8 @@ docker build ./main -t philasfwork/sfmc-swagger-ui
 echo "image Built"
 docker images
 
+# This is where 'heroku login' was called in the original script. I think this is the issue.
+
 echo "Trying login"
 heroku container:login
 
