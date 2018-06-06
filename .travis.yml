@@ -19,7 +19,7 @@ before_script:
   - chmod +x docker-commands.sh
 
 script:
-  - heroku run "HEROKU_EMAIL="phillip.anderson@salesforce.com" HEROKU_API_KEY=`heroku authorizations:create --expires-in 120 --short` ./docker-commands.sh" -a sfmc-travis-tests -s free
+  - heroku run "HEROKU_EMAIL="heroku auth:whoami" HEROKU_API_KEY=`heroku authorizations:create --expires-in 120 --short` ./docker-commands.sh" -a sfmc-travis-tests -s free
   #- docker build ./main -t philasfwork/sfmc-swagger-ui
   #- docker images
   #- curl -n -X PATCH https://api.heroku.com/apps/sfmc-travis-tests/formation -d "{ 'updates':[{'type':'web','docker_image':'philasfwork/sfmc-swagger-ui'}]}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3.docker-releases"
