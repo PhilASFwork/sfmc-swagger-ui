@@ -16,10 +16,9 @@ echo "making Docker Tag"
 docker tag philasfwork/sfmc-swagger-ui registry.heroku.com/sfmc-swagger-ui/web
 
 echo "docker pushing to Registry"
-docker push registry.heroku.com/sfmc-swagger-ui/web
-echo "Image Pushed"
+docker push registry.heroku.com/sfmc-swagger-ui/web 
 
 echo "Heroku pushing Image"
-heroku container:push web -a sfmc-travis-tests
+heroku container:push web -a sfmc-travis-tests # potentially produces a false positive on Travis.
 
 echo "Image pushed (published?)"
