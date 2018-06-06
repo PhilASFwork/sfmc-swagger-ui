@@ -9,10 +9,11 @@ env:
   global:
     - HEROKU_EMAIL="phillip.anderson@salesforce.com"
   matrix: 
-    # This one is the API_KEY from the website called HEROKU_PASSWORD
+    # This one is the API_KEY from the website (Account Settings -> API Key) ran through the travis encryption gem: 'travis encrypt HEROKU_PASSWORD=<Paste API Key>'
     - secure: ZF/Led/P76qZ8GbgDbA7RchBV5YWeH7Xhsnmv3hkhCgzHOVpHOzeeCMOgN8vqVO7vJa8OLohYXXQ2KR/mHwDW5/MM4DMpa0GBx0Cd48x3RITNpZf9CTisXHVR4EJHpnCcs7tb6gyGEHW6RVOYyBhTqTqLK+xWz+W+XrZYGHre+OkFBJvBMdsq4ziJ115f/+CCBFhlILcmnjYOPS/5cH/A/CiUGu1L+A0zJ980wC2OVpbWpX2/CcDVUKv2nW0E4ZA2GwHRC7TCPAc7jy17KONOEyWIth5RzqGjRvKrfF4ixNgJqyjOJqetxmrSchHEUQvv/pwQ1Yd2cz1/s8QrgGXXIx4NKFDcqXEQkPmjRHl8d+4DhLqqHkX/ofKFF+H5hNeyQrmAfXW91o1mMRiN2cEf8BN3EFqs1fo9myvh/ijIs9XccAi+X9ePOo53GaWxVdKpNsNLYcWdh27QSBdlew52NQDUQhYJXspp1YEZf4AERmw2UySAWnN3fXoXtdCyMthOdaL4RMVvGUxWZsAvx17iupCvhxR/furQ9LPfeNm5A7QeII7UE7g9i3VnkwgouLuZgLfn7TYnOEt5evcdt/g2ES27oh25FfZ41LAAEK33tbemfXuOAFQLpq2y8a7zpaEsMCNaa84b76E0x9zPWPfhTyB/Xc633F0ykTFcMDX7xY=
 
 before_script:
+  - curl https://cli-assets.heroku.com/install-ubuntu.sh | sh # This will update the heroku CLI to include the required container:releasee functionality
   - docker rmi -f philasfwork/sfmc-swagger-ui
   - docker rmi -f registry.heroku.com/sfmc-travis-tests/web
   - chmod +x heroku-setup.sh
