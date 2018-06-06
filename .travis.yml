@@ -23,11 +23,12 @@ before_script:
 
 script:
   #- heroku auth:whoami
-  - heroku run "HEROKU_EMAIL="$HEROKU_EMAIL" HEROKU_PASSWORD="$HEROKU_PASSWORD" ./docker-commands.sh" -a sfmc-travis-tests -s free
+  #- heroku run "HEROKU_EMAIL="$HEROKU_EMAIL" HEROKU_PASSWORD="$HEROKU_PASSWORD" ./docker-commands.sh" -a sfmc-travis-tests -s free
   #- docker build ./main -t philasfwork/sfmc-swagger-ui
   #- docker images
   #- curl -n -X PATCH https://api.heroku.com/apps/sfmc-travis-tests/formation -d "{ 'updates':[{'type':'web','docker_image':'philasfwork/sfmc-swagger-ui'}]}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3.docker-releases"
-  #- heroku login
+  - echo "phillip.anderson@salesforce.com"; echo "$HEROKU_PASSWORD"
+  - (echo "phillip.anderson@salesforce.com"; echo "$HEROKU_PASSWORD") | heroku login
   #- heroku container:login
   #- heroku container:push web -a sfmc-travis-tests
   #- heroku container:release web
