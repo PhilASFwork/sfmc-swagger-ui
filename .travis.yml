@@ -13,7 +13,7 @@ before_script:
   - docker rmi -f registry.heroku.com/sfmc-travis-tests/web
 
 script:
-  - heroku run "HEROKU_EMAIL=`phillip.anderson@salesforce.com` HEROKU_API_KEY=`$HEROKU_API_KEY` ./docker-commands.sh" -a sfmc-travis-tests
+  - heroku run "HEROKU_EMAIL=phillip.anderson@salesforce.com HEROKU_API_KEY=$HEROKU_API_KEY ./docker-commands.sh" -a sfmc-travis-tests
   #- docker build ./main -t philasfwork/sfmc-swagger-ui
   #- docker images
   #- curl -n -X PATCH https://api.heroku.com/apps/sfmc-travis-tests/formation -d "{ 'updates':[{'type':'web','docker_image':'philasfwork/sfmc-swagger-ui'}]}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3.docker-releases"
