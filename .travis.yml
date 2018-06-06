@@ -15,7 +15,6 @@ env:
 before_script:
   - docker rmi -f philasfwork/sfmc-swagger-ui
   - docker rmi -f registry.heroku.com/sfmc-travis-tests/web
-  - chmod +x docker-commands.sh
   - chmod +x heroku-setup.sh
 
 script:
@@ -28,19 +27,24 @@ script:
   - echo "image Built"
   - docker images
 
-  # This is where 'heroku login' was called in the original script. I think this is the issue.
+  # This is where 'heroku login' was called in the original script.
+  # I fudge a login in the heroku-setup.sh script.
 
   - echo "Trying login"
   - heroku container:login
-  - echo "logged in"
 
-  - echo "making Docker Tag"
-  - docker tag philasfwork/sfmc-swagger-ui registry.heroku.com/sfmc-swagger-ui/web
+  # Might not need this?
+  #- echo "making Docker Tag"
+  #- docker tag philasfwork/sfmc-swagger-ui registry.heroku.com/sfmc-swagger-ui/web
 
-  - echo "docker pushing to Registry"
-  - docker push registry.heroku.com/sfmc-swagger-ui/web 
+  # Might not need this?
+  #- echo "docker pushing to Registry"
+  #- docker push registry.heroku.com/sfmc-swagger-ui/web 
+
+  - echo "changing Dir for 1 command Image Build"
+  - cd main
 
   - echo "Heroku pushing Image"
-  - heroku container:push web -a sfmc-travis-tests # potentially produces a false positive on Travis.
+  - heroku container:push web -a sfmc-travis-tests
 
   - echo "Image pushed (published?)"
