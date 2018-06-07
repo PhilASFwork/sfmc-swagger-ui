@@ -24,7 +24,7 @@ script:
   - ./heroku-setup.sh
   
   # Make sure image is building on stack that matches the site.
-  - heroku stack:set heroku-16 -a sfmc-travis-tests
+  #- heroku stack:set heroku-16 -a sfmc-travis-tests
 
   # log into container registry and create the image.
   - echo "Trying login"
