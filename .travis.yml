@@ -40,3 +40,12 @@ script:
   - heroku container:release web -a sfmc-travis-tests
 
   - echo "Image published!"
+  
+notifications:
+  email:
+    recipients:
+      - phillip.anderson@salesforce.com
+      #- ahoem@salesforce.com
+      #- API team or others?
+    on_success: always
+    on_failure: always
