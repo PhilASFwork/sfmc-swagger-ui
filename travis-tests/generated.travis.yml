@@ -1,7 +1,0 @@
-deploy:
-  provider: heroku
-  api_key:
-    secure: KL4cUPTRAwXx0emXVGc2Js8jk2AQFVxyJZJbXp92AAhDwfuJCCRV3CNb1zqHt6Dh335GKUlPhUnw4kXtG18hcZLOf8TTziVNpr1ngSYRMCook+bHALj1nMuFuS2PC2lguCogZYErphsAhKq8eJkmd3gVBKey6U8vMHbzoyVpG+wxsV9Qpex5PlN201qNB3IkYXSSYeS2++89mqW1Asu0Og7G5rID6gpYKUeoirp6tSBEVsNV2j4i9OYnqVo85u0UrSm1hrHtTKTh5+WYaxKH1zy+jSmjechdjrSTqCTBO6NNvKqlc47bcI1KeJhtrWi+CPKRq9l1+/jBuOJdReNSMnvS9XaW7WBGQ+06XYeSIKJ+5vh/Rig/ufafti0g/iiDNI3Sw4YLJnAj+rSIZyhYPXZB/Xu6LghOBXYoI2gQssklX1ufG2SMrvuGDQ/6CQgASN7GFZV8vx+bh9EZ7paPCPTGU+qMhhx7eNRhA9Ai20jU1PIxvKWW1/MUdxFgcPjNp++xu/A6TM4ELwVCgSCJ26WZJ61F2EDoL1eqK+pyuw0s217pfKJByh2j/kQD9AOaiBsS53VV1xMkHONv5IuxGhzORcQZ8EDPavpJlRME/uQmOv44If3e8igkQY5ydzsMcPKx4p4MTeEUwB8tB+kB9qQHD06AtmZgJ40t8E1Jxe4=
-  app: sfmc-travis-tests
-  on:
-    repo: PhilASFwork/sfmc-swagger-ui
