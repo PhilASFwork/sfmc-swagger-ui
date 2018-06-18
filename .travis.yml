@@ -30,9 +30,6 @@ script:
   - echo "Trying login"
   - heroku container:login
 
-  - echo "changing Dir so Heroku knows how to build the Docker Image."
-  - cd main
-
   - echo "Heroku building and pushing Image to registry"
   - heroku container:push web -a sfmc-travis-tests
 
